@@ -25,8 +25,34 @@ window.addEventListener("load", function () {
     contenido.style.display = "none";
     labelCont.style.display = "none";
 
+    tipo.addEventListener("change", function () {
+        if (tipo.value == "1") {
+            cImagen.style.display = "";
+            labelImg.style.display = "";
+            cVideo.style.display = "none";
+            labelVid.style.display = "none";
+            contenido.style.display = "none";
+            labelCont.style.display = "none";
+        } else if (tipo.value == "2") {
+            cImagen.style.display = "none";
+            labelImg.style.display = "none";
+            cVideo.style.display = "";
+            labelVid.style.display = "";
+            contenido.style.display = "none";
+            labelCont.style.display = "none";
+        } else if (tipo.value == "3") {
+            cImagen.style.display = "none";
+            labelImg.style.display = "none";
+            cVideo.style.display = "none";
+            labelVid.style.display = "none";
+            contenido.style.display = "";
+            labelCont.style.display = "";
+        }
+    })
 
     crear.addEventListener("click", function () {
+
+        // TODO para mañana hay que guardar el tipo en un json guardando segun lo que haya en tipo
 
         var noticia = {
             "f_inicio": f_inicio.value,
