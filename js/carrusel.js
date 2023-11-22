@@ -24,9 +24,9 @@ window.addEventListener("load", function () {
 
                     }
 
-                    i++;
+                    i = (i + 1) % y.length;
 
-                    setTimeout(mostrarElemento, y[i - 1].duracion);
+                    setTimeout(mostrarElemento, y[i].duracion);
                 }
             }
 
