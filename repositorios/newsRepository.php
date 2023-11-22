@@ -45,6 +45,16 @@ class NewsRepository
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    //LEER TODAS LAS NOTICIAS
+    public function readAllNews()
+    {
+        $query = "SELECT * FROM NOTICIAS";
+        $stmt = $this->conexion->prepare($query);  
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
 }
 
 
