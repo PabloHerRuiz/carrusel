@@ -54,7 +54,7 @@
             <textarea id="contenido" name="contenido"></textarea>
 
             <div class="buttons">
-                <input type="submit" value="Insertar">
+                <input type="submit" value="Insertar" id="crearNoticia">
                 <button href="index.php">Regresar</button>
             </div>
         </form>

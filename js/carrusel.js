@@ -1,6 +1,62 @@
 window.addEventListener("load", function () {
     var contenedor = document.getElementById("contenedor");
 
+    //crear noticias
+    var crear = document.getElementById("crearNoticia");
+    var f_inicio = document.getElementById("f_inicio");
+    var f_fin = document.getElementById("f_fin");
+    var duracion = document.getElementById("duracion");
+    var prioridad = document.getElementById("prioridad");
+    var titulo = document.getElementById("titulo");
+    var perfil = document.getElementById("perfil");
+    var tipo = document.getElementById("tipo");
+    var labelImg = document.querySelector('label[for="imagen"]');
+    var cImagen = document.getElementById("imagen");
+    var labelVid = document.querySelector('label[for="video"]');
+    var cVideo = document.getElementById("video");
+    var labelCont = document.querySelector('label[for="contenido"]');
+    var contenido = document.getElementById("contenido");
+
+    //mostrar
+    cImagen.style.display = "none";
+    labelImg.style.display = "none";
+    cVideo.style.display = "none";
+    labelVid.style.display = "none";
+    contenido.style.display = "none";
+    labelCont.style.display = "none";
+
+
+    crear.addEventListener("click", function () {
+
+        var noticia = {
+            "f_inicio": f_inicio.value,
+            "f_fin": f_fin.value,
+            "duracion": duracion.value,
+            "prioridad": prioridad.value,
+            "titulo": titulo.value,
+            "perfil": perfil.value,
+            "tipo": tipo.value
+        };
+        var noticiaJson = JSON.stringify(noticia);
+        // Realiza la solicitud POST
+        fetch("http://localhost/carrusel/API/apiNews.php", {
+            method: "POST",
+            body: noticiaJson,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(x => x.text())
+            .then(y => {
+                console.log(y);
+                console.log("noticia creada");
+
+            })
+    })
+
+
+    //carrusel
     fetch("json/datos.json")
         .then(x => x.json())
         .then(y => {

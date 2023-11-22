@@ -1,5 +1,9 @@
 <?php
 
+require_once $_SERVER["DOCUMENT_ROOT"] . '/carrusel/database/db.php';
+require_once $_SERVER["DOCUMENT_ROOT"] . '/carrusel/repositorios/newsRepository.php';
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtén los datos enviados en la solicitud POST
     $datos = json_decode(file_get_contents("php://input"), true);
@@ -13,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $conn = db::abreconexion();
     $newsRepository = new NewsRepository($conn);
-    $noticias=$newsRepository->readAllNews();
+    $noticias = $newsRepository->readAllNews();
 
     $not = [];
     foreach ($noticias as $noticia) {
