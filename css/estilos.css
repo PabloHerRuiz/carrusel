@@ -14,3 +14,34 @@ img{
     top: 0;
     left: 0;
   }
+
+  #news-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+  }
+  
+  label {
+    margin-bottom: 5px;
+  }
+  
+  input, select, textarea,button {
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
+  textarea{
+    padding: 50px;
+  }
+  
+  .buttons {
+    margin-top: 15px;
+  }
+  

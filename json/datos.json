@@ -6,7 +6,7 @@
         "tamaño": "25 MB",
         "duracion": "5000",
         "descripcion": "Este es el primer video de nuestra plataforma",
-        "ruta": "1.mp4"
+        "ruta": "videos/1.mp4"
     },
     {
         "nombre": "1",
@@ -15,7 +15,7 @@
         "tamaño": "25 MB",
         "duracion": "1000",
         "descripcion": "Este es la primera imagen de nuestra plataforma",
-        "ruta": "1.jpg"
+        "ruta": "imagenes/1.jpg"
     },
     {
         "nombre": "2",
@@ -24,6 +24,6 @@
         "tamaño": "25 MB",
         "duracion": "1000",
         "descripcion": "Este es la segunda imagen de nuestra plataforma",
-        "ruta": "2.png"
+        "ruta": "imagenes/2.png"
     }
 ]
