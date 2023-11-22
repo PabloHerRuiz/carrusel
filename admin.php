@@ -12,7 +12,7 @@
     <div id="news-container">
         <h1>CREAR NOTICIAS</h1>
 
-        <form action="admin.php" method="POST" enctype="multipart/form-data">
+        <form action="/API/apiNews.php" method="POST" enctype="multipart/form-data">
             <label for="f_inicio">Fecha Inicio:</label>
             <input type="datetime-local" id="f_inicio" name="f_inicio">
 
