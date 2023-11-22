@@ -1,0 +1,29 @@
+[
+    {
+        "nombre": "1",
+        "tipo": "video",
+        "formato": "mp4",
+        "tamaño": "25 MB",
+        "duracion": "5000",
+        "descripcion": "Este es el primer video de nuestra plataforma",
+        "ruta": "1.mp4"
+    },
+    {
+        "nombre": "1",
+        "tipo": "imagen",
+        "formato": "jpg",
+        "tamaño": "25 MB",
+        "duracion": "1000",
+        "descripcion": "Este es la primera imagen de nuestra plataforma",
+        "ruta": "1.jpg"
+    },
+    {
+        "nombre": "2",
+        "tipo": "imagen",
+        "formato": "png",
+        "tamaño": "25 MB",
+        "duracion": "1000",
+        "descripcion": "Este es la segunda imagen de nuestra plataforma",
+        "ruta": "2.png"
+    }
+]
