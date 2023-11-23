@@ -57,25 +57,25 @@ window.addEventListener("load", function () {
 
         // Validar que los campos no estén vacíos
         if (f_inicio.value === "") {
-            errores.push('Por favor, selecciona una dificultad.');
+            errores.push('Por favor, selecciona una fecha de comienzo.');
         }
         if (f_fin.value === "") {
-            errores.push('Por favor, selecciona una categoría.');
+            errores.push('Por favor, selecciona una fecha de fin.');
         }
         if (duracion.value === "") {
-            errores.push('Por favor, ingresa el enunciado.');
+            errores.push('Por favor, ingresa la duracion.');
         }
         if (prioridad.value === "") {
-            errores.push('Por favor, ingresa la opción 1.');
+            errores.push('Por favor, ingresa la prioridad.');
         }
         if (titulo.value === "") {
-            errores.push('Por favor, ingresa la opción 2.');
+            errores.push('Por favor, ingresa el titulo.');
         }
         if (perfil.value === "") {
-            errores.push('Por favor, ingresa la opción 3.');
+            errores.push('Por favor, ingresa el perfil.');
         }
         if (tipo.value === "") {
-            errores.push('Por favor, selecciona la opción correcta.');
+            errores.push('Por favor, selecciona el tipo.');
         }
 
         // Mostrar alerta con mensajes de error
@@ -87,6 +87,46 @@ window.addEventListener("load", function () {
 
         // TODO para mañana hay que guardar el tipo en un json guardando segun lo que haya en tipo
 
+        if (tipo.value == "1") {
+
+            if (cImagen.files.length > 0) {
+                var form = new FormData();
+                form.append("imagen", cImagen.files[0]);
+                fetch("http://localhost/carrusel/API/apiNews.php?foto=1", {
+                    method: "POST",
+                    body: form
+                })
+                    .then(x => x.text())
+                    .then(y => {
+                        alert(y);
+                        cImagen.value = null;
+                    }
+                    );
+
+            } else {
+                alert("DEBE INTRODUCIR UN FICHERO")
+            }
+
+            tipoContent = {
+                "tipo": "imagen",
+                "url": cImagen.value
+            }
+        } else if (tipo.value == "2") {
+            tipoContent = {
+                "tipo": "video",
+                "url": cVideo.value
+            }
+
+        } else if (tipo.value == "3") {
+            tipoContent = {
+                "tipo": "web",
+                "contenido": contenido.value
+            }
+        }
+
+        tipoJson = JSON.stringify(tipoContent);
+
+
         var noticia = {
             "f_inicio": f_inicio.value,
             "f_fin": f_fin.value,
@@ -94,7 +134,7 @@ window.addEventListener("load", function () {
             "prioridad": prioridad.value,
             "titulo": titulo.value,
             "perfil": perfil.value,
-            "tipo": tipo.value
+            "tipo": tipoJson
         };
         var noticiaJson = JSON.stringify(noticia);
         // Realiza la solicitud POST
@@ -115,36 +155,5 @@ window.addEventListener("load", function () {
     })
 
 
-    //carrusel
-    fetch("json/datos.json")
-        .then(x => x.json())
-        .then(y => {
-            let i = 0;
-
-            function mostrarElemento() {
-                if (i < y.length) {
-                    contenedor.innerHTML = "";
-
-                    if (y[i].tipo == "imagen") {
-                        var imagen = document.createElement("img");
-                        imagen.src = y[i].ruta;
-                        contenedor.appendChild(imagen);
-                    } else if (y[i].tipo == "video") {
-                        var video = document.createElement("video");
-                        video.src = y[i].ruta;
-                        video.autoplay = true;
-                        video.muted = true;
-                        contenedor.appendChild(video);
-                    } else if (y[i].tipo == "web") {
-
-                    }
-
-                    i = (i + 1) % y.length;
-
-                    setTimeout(mostrarElemento, y[i].duracion);
-                }
-            }
-
-            mostrarElemento();
-        });
+  
 });
