@@ -50,7 +50,12 @@ window.addEventListener("load", function () {
         }
     })
 
-    crear.addEventListener("click", function () {
+
+    // Obtén el formulario
+    var formulario = document.getElementById("formulario");
+
+    // Agrega un event listener para el evento submit
+    formulario.addEventListener("submit", function (event) {
 
         // Almacenar mensajes de error
         var errores = [];
@@ -77,13 +82,30 @@ window.addEventListener("load", function () {
         if (tipo.value === "") {
             errores.push('Por favor, selecciona el tipo.');
         }
-
-        // Mostrar alerta con mensajes de error
-        if (errores.length > 0) {
-            alert('Todos los campos son obligatorios. Por favor, completa todos los campos:\n\n' + errores.join('\n'));
-            return;
+        if (cImagen.style.display !== "none" && cImagen.value === "") {
+            errores.push('Por favor, selecciona una imagen.');
+        }
+        if (cVideo.style.display !== "none" && cVideo.value === "") {
+            errores.push('Por favor, selecciona un video.');
+        }
+        if (contenido.style.display !== "none" && contenido.value === "") {
+            errores.push('Por favor, rellene el contenido.');
         }
 
+        // Verificar si hay errores
+        if (errores.length > 0) {
+            // Prevenir el envío del formulario
+            event.preventDefault();
+
+            // Mostrar alerta con mensajes de error
+            alert('Todos los campos son obligatorios. Por favor, completa todos los campos:\n\n' + errores.join('\n'));
+        } else {
+            // No hay errores, enviar el formulario
+            formulario.submit();
+        }
+    });
+
+    crear.addEventListener("click", function () {
 
         if (tipo.value == "1") {
 
@@ -102,9 +124,10 @@ window.addEventListener("load", function () {
                     );
 
             } else {
-                alert("DEBE INTRODUCIR UN FICHERO")
+                // alert("DEBE INTRODUCIR UN FICHERO")
+                return;
             }
-
+            //guardamos datos
             tipoContent = {
                 "tipo": "imagen",
                 "url": cImagen.value.replace("C:\\fakepath\\", "imagenes/")
@@ -126,15 +149,25 @@ window.addEventListener("load", function () {
                     );
 
             } else {
-                alert("DEBE INTRODUCIR UN FICHERO")
+                // alert("DEBE INTRODUCIR UN FICHERO")
+                return;
             }
 
+            //sacamos formato
+            var ruta = cVideo.value;
+            var partes = ruta.split('\\');
+            var nombreArchivoConExtension = partes[partes.length - 1];
+            var formato = nombreArchivoConExtension.split('.').pop();
+
+            //guardamos datos
             tipoContent = {
                 "tipo": "video",
-                "url": cVideo.value.replace("C:\\fakepath\\", "videos/")
+                "url": cVideo.value.replace("C:\\fakepath\\", "videos/"),
+                "formato": formato
             }
 
         } else if (tipo.value == "3") {
+            //guardamos datos
             tipoContent = {
                 "tipo": "web",
                 "contenido": contenido.value
@@ -304,7 +337,7 @@ window.addEventListener("load", function () {
                 var id = fila.querySelector(".id").textContent.trim();
 
                 // Realiza la solicitud PUT
-                fetch("http://localhost/carrusel/API/apiNews.php?id="+id, {
+                fetch("http://localhost/carrusel/API/apiNews.php?id=" + id, {
                     method: "DELETE"
                 })
                     .then(x => x.text())
