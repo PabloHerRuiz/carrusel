@@ -9,20 +9,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         //guardar imagen o video
         $dir_imagenes = '../imagenes/';
-        $dir_videos = '../videos/';
         //imagenes
         $fichero_nombre_img = $_FILES['imagen']['name'];
         $fichero_tipo_img = $_FILES['imagen']['type'];
-
-        //videos
-        $fichero_nombre_vid = $_FILES['video']['name'];
-        $fichero_tipo_vid = $_FILES['video']['type'];
 
         // Verificar si es una imagen
         if (strpos($fichero_tipo_img, 'image') !== false) {
             $fichero_subido = $dir_imagenes . basename($fichero_nombre_img);
             $fichero_temporal = $_FILES['imagen']['tmp_name'];
-        } elseif (strpos($fichero_tipo_vid, 'video') !== false) {
+        }
+
+        // Mover archivo a la carpeta correspondiente
+        if (move_uploaded_file($fichero_temporal, $fichero_subido)) {
+            echo "El archivo se ha cargado correctamente.";
+        } else {
+            echo "Hubo un error al cargar el archivo.";
+        }
+
+    }
+    if (isset($_GET["video"])) {
+
+        //guardar imagen o video
+        $dir_videos = '../videos/';
+
+        //videos
+        $fichero_nombre_vid = $_FILES['video']['name'];
+        $fichero_tipo_vid = $_FILES['video']['type'];
+
+
+        // Verificar si es un video
+        if (strpos($fichero_tipo_vid, 'video') !== false) {
             $fichero_subido = $dir_videos . basename($fichero_nombre_vid);
             $fichero_temporal = $_FILES['video']['tmp_name'];
         }
@@ -34,7 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Hubo un error al cargar el archivo.";
         }
 
-    } // Obtén los datos enviados en la solicitud POST
+    }
+    // Obtén los datos enviados en la solicitud POST
     $datos = json_decode(file_get_contents("php://input"), true);
     if ($datos) {
         $conn = db::abreconexion();

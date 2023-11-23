@@ -109,12 +109,31 @@ window.addEventListener("load", function () {
 
             tipoContent = {
                 "tipo": "imagen",
-                "url": cImagen.value
+                "url": cImagen.value.replace("C:\\fakepath\\", "imagenes/")
             }
         } else if (tipo.value == "2") {
+
+            if (cVideo.files.length > 0) {
+                var form = new FormData();
+                form.append("video", cVideo.files[0]);
+                fetch("http://localhost/carrusel/API/apiNews.php?video=1", {
+                    method: "POST",
+                    body: form
+                })
+                    .then(x => x.text())
+                    .then(y => {
+                        alert(y);
+                        cVideo.value = null;
+                    }
+                    );
+
+            } else {
+                alert("DEBE INTRODUCIR UN FICHERO")
+            }
+
             tipoContent = {
                 "tipo": "video",
-                "url": cVideo.value
+                "url": cVideo.value.replace("C:\\fakepath\\", "videos/")
             }
 
         } else if (tipo.value == "3") {
@@ -155,5 +174,5 @@ window.addEventListener("load", function () {
     })
 
 
-  
+
 });
