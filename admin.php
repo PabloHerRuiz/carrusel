@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/estilos.css">
     <script src="js/carrusel.js"></script>
+    
     <title>Administrador</title>
 </head>
 
@@ -56,9 +57,10 @@
 
             <div class="buttons">
                 <input type="submit" value="Insertar" id="crearNoticia">
-                <button href="index.php">Regresar</button>
+                
             </div>
         </form>
+        <button id="refresca">Refresca</button>
     </div>
     <div id="listado-noticias">
         <table id="tabla">

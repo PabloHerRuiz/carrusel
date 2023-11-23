@@ -1,5 +1,8 @@
 window.addEventListener("load", function () {
     var contenedor = document.getElementById("contenedor");
+    var infoDiv = document.getElementById("infoDiv");
+    var indiceSpan = document.getElementById("indice");
+    var totalElementosSpan = document.getElementById("totalElementos");
     var plantillaNoticia;
 
     // Cargar la plantilla de noticia una vez
@@ -10,51 +13,91 @@ window.addEventListener("load", function () {
             plantillaNoticia.innerHTML = y;
         });
 
-    // Carrusel
-    fetch("http://localhost/carrusel/API/apiNews.php")
-        .then(x => x.json())
-        .then(y => {
-            let i = 0;
+    // Función para mezclar elementos de un array aleatoriamente
+    function shuffle(baraja) {
+        baraja.sort(function (a, b) { return Math.random() - 0.5 });
+    }
 
-            function mostrarElemento() {
-                if (i < y.length) {
-                    contenedor.innerHTML = "";
-                    var tipoDeco = JSON.parse(y[i].tipo);
+    // Verifica si se activó el refresco
+    var refrescarCarrusel = localStorage.getItem('refrescarCarrusel');
 
-                    if (tipoDeco.tipo == "imagen") {
-                        var imagen = document.createElement("img");
-                        imagen.src = tipoDeco.url;
-                        contenedor.appendChild(imagen);
-                    } else if (tipoDeco.tipo == "video") {
-                        var video = document.createElement("video");
-                        var source = document.createElement("source");
-                        source.src = tipoDeco.url;
-                        source.type = "video/" + tipoDeco.formato;
-                        video.appendChild(source);
+    if (refrescarCarrusel === 'true') {
+        // Lógica para recargar el carrusel
+        cargarCarrusel();
 
-                        video.autoplay = true;
-                        video.muted = true;
-                        contenedor.appendChild(video);
-                    } else if (tipoDeco.tipo == "web") {
-                        // Crear la noticia usando la plantilla cargada
-                        var noticia = plantillaNoticia.cloneNode(true);
-                        
-                        var titulo = noticia.querySelector(".titulo");
-                        var parrafo = noticia.querySelector(".parrafo");
+        // Desactiva el refresco para evitar recargas continuas
+        localStorage.setItem('refrescarCarrusel', 'false');
+    }
 
-                        titulo.textContent = y[i].titulo;
-                        parrafo.textContent = tipoDeco.contenido;
+    function cargarCarrusel() {
+        // Carrusel
+        fetch("http://localhost/carrusel/API/apiNews.php")
+            .then(x => x.json())
+            .then(y => {
+                //barajamos los datos que vienen de la api
+                shuffle(y);
 
-                        contenedor.appendChild(noticia);
+                let i = 0;
+                totalElementosSpan.textContent = y.length;
+
+                function mostrarElemento() {
+                    if (i < y.length) {
+                        contenedor.innerHTML = "";
+                        var tipoDeco = JSON.parse(y[i].tipo);
+
+                        if (tipoDeco.tipo == "imagen") {
+                            var imagen = document.createElement("img");
+                            imagen.src = tipoDeco.url;
+                            contenedor.appendChild(imagen);
+                        } else if (tipoDeco.tipo == "video") {
+                            var video = document.createElement("video");
+                            var source = document.createElement("source");
+                            source.src = tipoDeco.url;
+                            source.type = "video/" + tipoDeco.formato;
+                            video.appendChild(source);
+
+                            video.autoplay = true;
+                            video.muted = true;
+                            contenedor.appendChild(video);
+                        } else if (tipoDeco.tipo == "web") {
+                            // Crear la noticia usando la plantilla cargada
+                            var noticia = plantillaNoticia.cloneNode(true);
+
+                            var titulo = noticia.querySelector(".titulo");
+                            var parrafo = noticia.querySelector(".parrafo");
+
+                            titulo.textContent = y[i].titulo;
+                            parrafo.textContent = tipoDeco.contenido;
+
+                            contenedor.appendChild(noticia);
+                        }
+
+                        // Actualiza el índice en el div de información
+                        indiceSpan.textContent = i + 1;
+
+                        if (i == y.length) {
+                            if (refrescarCarrusel === 'true') {
+                                // Lógica para recargar el carrusel
+                                cargarCarrusel();
+
+                                // Desactiva el refresco para evitar recargas continuas
+                                localStorage.setItem('refrescarCarrusel', 'false');
+                            }
+                        }
+
+                        //bucle infinito
+                        i = (i + 1) % y.length;
+
+                        //temporizador
+                        setTimeout(mostrarElemento, y[i].duracion);
                     }
-
-                    i = (i + 1) % y.length;
-
-                    setTimeout(mostrarElemento, y[i].duracion);
                 }
-            }
 
-            mostrarElemento();
-        });
+                mostrarElemento();
+            });
+    }
+
+    cargarCarrusel();
+
+
 });
-   

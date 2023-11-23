@@ -349,4 +349,11 @@ window.addEventListener("load", function () {
         });
 
     }
+
+    var refrescar = document.getElementById("refresca");
+    refrescar.addEventListener("click",function(){
+        localStorage.setItem('refrescarCarrusel', 'true');
+    })
+
+
 });

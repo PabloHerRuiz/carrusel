@@ -9,5 +9,8 @@
 </head>
 <body>
     <div id="contenedor"></div>    
+    <div id="infoDiv">
+    <span id="indice"></span> / <span id="totalElementos"></span>
+</div>
 </body>
 </html>
