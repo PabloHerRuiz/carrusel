@@ -1,6 +1,5 @@
 window.addEventListener("load", function () {
-    var contenedor = document.getElementById("contenedor");
-
+    
     //crear noticias
     var crear = document.getElementById("crearNoticia");
     var f_inicio = document.getElementById("f_inicio");
