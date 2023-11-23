@@ -174,5 +174,61 @@ window.addEventListener("load", function () {
     })
 
 
+    //listado noticias
+    var tbody = document.getElementById("bodyTabla");
 
+    fetch("http://localhost/carrusel/API/apiNews.php")
+        .then(x => x.json())
+        .then(y => {
+            if (y && y.length > 0) {
+                let tableContent = "";
+                y.forEach(datos => {
+                    tableContent += `<tr>`;
+                    tableContent += `<td>${datos.id}</td>`;
+                    tableContent += `<td>${datos.f_inicio}</td>`;
+                    tableContent += `<td>${datos.f_fin}</td>`;
+                    tableContent += `<td>${datos.duracion}</td>`;
+                    tableContent += `<td>${datos.prioridad}</td>`;
+                    tableContent += `<td>${datos.titulo}</td>`;
+                    tableContent += `<td>${datos.perfil}</td>`;
+                    tableContent += `<td>${datos.tipo}</td>`;
+                    tableContent += `<td class="acciones"><a><img class="iconE icon" src="css/iconos/editar.png"><img class="iconB icon" src="css/iconos/borrar.png"><img class="iconG icon" src="css/iconos/guardar.png"></a></td>`;
+                    tableContent += `</tr>`;
+                });
+                tbody.innerHTML = tableContent;
+
+                // Agregar el evento de clic a los iconos después de que se cargue la tabla
+                agregarEventos();
+            }
+        });
+
+        function agregarEventos() {
+            var editar = document.querySelectorAll(".iconE");
+            editar.forEach(function (elemento) {
+                elemento.addEventListener("click", function () {
+                    var fila = this.closest("tr");
+        
+                    // Obtén todas las celdas de la fila, excluyendo la celda de Acciones
+                    var celdas = fila.querySelectorAll("td:not(.acciones)");
+        
+                    // Itera sobre las celdas y almacena el contenido original en una propiedad de datos
+                    celdas.forEach(function (celda) {
+                        var contenidoActual = celda.textContent.trim();
+                        celda.dataset.contenidoOriginal = contenidoActual;
+                    });
+        
+                    // Itera sobre las celdas y ajusta su contenido durante la edición
+                    celdas.forEach(function (celda) {
+                        var contenidoOriginal = celda.dataset.contenidoOriginal;
+        
+                        // Ajusta el contenido de la celda para mantener el ancho
+                        celda.innerHTML = `<input type="text" value="${contenidoOriginal.replace(/"/g, '&quot;')}" style="width: ${celda.clientWidth}px; box-sizing: border-box;">`;
+                    });
+        
+                    // Muestra el icono de guardar y oculta el icono de editar
+                    fila.querySelector(".iconE").style.display = "none";
+                    fila.querySelector(".iconG").style.display = "inline";
+                });
+            });
+        }
 });

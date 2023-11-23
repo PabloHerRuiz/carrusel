@@ -60,6 +60,26 @@
             </div>
         </form>
     </div>
+    <div id="listado-noticias">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>ID NOTICIAS</th>
+                    <th>F_INICIO</th>
+                    <th>F_FIN</th>
+                    <th>DURACION</th>
+                    <th>PRIORIDAD</th>
+                    <th>TITULO</th>
+                    <th>PERFIL</th>
+                    <th>TIPO</th>
+                    <th>ACCIONES</th>
+
+                </tr>
+            </thead>
+            <tbody id="bodyTabla">
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>
