@@ -85,8 +85,6 @@ window.addEventListener("load", function () {
         }
 
 
-        // TODO para mañana hay que guardar el tipo en un json guardando segun lo que haya en tipo
-
         if (tipo.value == "1") {
 
             if (cImagen.files.length > 0) {
@@ -184,14 +182,14 @@ window.addEventListener("load", function () {
                 let tableContent = "";
                 y.forEach(datos => {
                     tableContent += `<tr>`;
-                    tableContent += `<td>${datos.id}</td>`;
-                    tableContent += `<td>${datos.f_inicio}</td>`;
-                    tableContent += `<td>${datos.f_fin}</td>`;
-                    tableContent += `<td>${datos.duracion}</td>`;
-                    tableContent += `<td>${datos.prioridad}</td>`;
-                    tableContent += `<td>${datos.titulo}</td>`;
-                    tableContent += `<td>${datos.perfil}</td>`;
-                    tableContent += `<td>${datos.tipo}</td>`;
+                    tableContent += `<td data-nombre="id" class="id">${datos.id}</td>`;
+                    tableContent += `<td data-nombre="f_inicio">${datos.f_inicio}</td>`;
+                    tableContent += `<td data-nombre="f_fin">${datos.f_fin}</td>`;
+                    tableContent += `<td data-nombre="duracion">${datos.duracion}</td>`;
+                    tableContent += `<td data-nombre="prioridad">${datos.prioridad}</td>`;
+                    tableContent += `<td data-nombre="titulo">${datos.titulo}</td>`;
+                    tableContent += `<td data-nombre="perfil">${datos.perfil}</td>`;
+                    tableContent += `<td data-nombre="tipo">${datos.tipo}</td>`;
                     tableContent += `<td class="acciones"><a><img class="iconE icon" src="css/iconos/editar.png"><img class="iconB icon" src="css/iconos/borrar.png"><img class="iconG icon" src="css/iconos/guardar.png"></a></td>`;
                     tableContent += `</tr>`;
                 });
@@ -202,33 +200,121 @@ window.addEventListener("load", function () {
             }
         });
 
-        function agregarEventos() {
-            var editar = document.querySelectorAll(".iconE");
-            editar.forEach(function (elemento) {
-                elemento.addEventListener("click", function () {
-                    var fila = this.closest("tr");
-        
-                    // Obtén todas las celdas de la fila, excluyendo la celda de Acciones
-                    var celdas = fila.querySelectorAll("td:not(.acciones)");
-        
-                    // Itera sobre las celdas y almacena el contenido original en una propiedad de datos
-                    celdas.forEach(function (celda) {
-                        var contenidoActual = celda.textContent.trim();
-                        celda.dataset.contenidoOriginal = contenidoActual;
-                    });
-        
-                    // Itera sobre las celdas y ajusta su contenido durante la edición
-                    celdas.forEach(function (celda) {
-                        var contenidoOriginal = celda.dataset.contenidoOriginal;
-        
-                        // Ajusta el contenido de la celda para mantener el ancho
-                        celda.innerHTML = `<input type="text" value="${contenidoOriginal.replace(/"/g, '&quot;')}" style="width: ${celda.clientWidth}px; box-sizing: border-box;">`;
-                    });
-        
-                    // Muestra el icono de guardar y oculta el icono de editar
-                    fila.querySelector(".iconE").style.display = "none";
-                    fila.querySelector(".iconG").style.display = "inline";
+    function agregarEventos() {
+        var editar = document.querySelectorAll(".iconE");
+        var guardar = document.querySelectorAll(".iconG");
+        var borrar = document.querySelectorAll(".iconB");
+        editar.forEach(function (elemento) {
+            elemento.addEventListener("click", function () {
+                var fila = this.closest("tr");
+
+                // Obtén todas las celdas de la fila, excluyendo la celda de Acciones
+                var celdas = fila.querySelectorAll("td:not(.acciones,.id)");
+
+                // Itera sobre las celdas y almacena el contenido original en una propiedad de datos
+                celdas.forEach(function (celda) {
+                    var contenidoActual = celda.textContent.trim();
+                    celda.dataset.contenidoOriginal = contenidoActual;
                 });
+
+                // Itera sobre las celdas y ajusta su contenido durante la edición
+                celdas.forEach(function (celda) {
+                    var contenidoOriginal = celda.dataset.contenidoOriginal;
+
+                    // Ajusta el contenido de la celda para mantener el ancho
+                    celda.innerHTML = `<input type="text" value="${contenidoOriginal.replace(/"/g, '&quot;')}" style="width: ${celda.clientWidth}px; box-sizing: border-box;">`;
+                });
+
+                // Muestra el icono de guardar y oculta el icono de editar
+                fila.querySelector(".iconE").style.display = "none";
+                fila.querySelector(".iconG").style.display = "inline";
+                fila.querySelector(".iconB").style.display = "none";
             });
-        }
+        });
+
+        guardar.forEach(function (elemento) {
+            elemento.addEventListener("click", function () {
+                var fila = elemento.closest("tr");
+                var celdas = fila.querySelectorAll("td:not(.acciones)");
+
+                // Objeto para almacenar los datos actualizados de la fila
+                var actualiza = {};
+
+                // Lista para almacenar referencias a los inputs
+                var inputs = [];
+
+                // Utilizamos un bucle normal
+                for (var i = 0; i < celdas.length; i++) {
+                    var celda = celdas[i];
+                    var nombreCampo = celda.getAttribute("data-nombre"); // Nombre del campo asociado a la celda
+                    var inputElement = celda.querySelector("input");
+                    if (inputElement) {
+                        var nuevoContenido = inputElement.value;
+
+                        // Asigna el nuevo contenido a la celda
+                        celda.textContent = nuevoContenido;
+
+                        // Agrega el input a la lista
+                        inputs.push(inputElement);
+                    }
+
+                    // Agregar el campo y su valor al objeto actualiza
+                    actualiza[nombreCampo] = nuevoContenido;
+                }
+
+                // Elimina todos los inputs de la lista
+                inputs.forEach(function (input) {
+                    if (input && input.parentNode) {
+                        input.parentNode.removeChild(input);
+                    }
+                });
+
+                var id = fila.querySelector(".id").textContent.trim();
+                actualiza["id"] = id;
+
+                // Convertir el objeto actualiza a formato JSON
+                var actualizaJson = JSON.stringify(actualiza);
+
+                // Realiza la solicitud PUT
+                fetch("http://localhost/carrusel/API/apiNews.php", {
+                    method: "PUT",
+                    body: actualizaJson,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(x => x.text())
+                    .then(y => {
+                        console.log(y);
+                        console.log("noticia actualizada");
+                    });
+
+                fila.querySelector(".iconE").style.display = "inline";
+                fila.querySelector(".iconG").style.display = "none";
+                fila.querySelector(".iconB").style.display = "inline";
+            });
+        });
+
+
+        borrar.forEach(function (elemento) {
+            elemento.addEventListener("click", function () {
+                var fila = elemento.closest("tr");
+
+                var id = fila.querySelector(".id").textContent.trim();
+
+                // Realiza la solicitud PUT
+                fetch("http://localhost/carrusel/API/apiNews.php?id="+id, {
+                    method: "DELETE"
+                })
+                    .then(x => x.text())
+                    .then(y => {
+                        console.log(y);
+                        console.log("noticia eliminada");
+                        fila.remove();
+                    });
+            });
+        });
+
+    }
 });

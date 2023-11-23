@@ -84,5 +84,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     header('Content-Type: application/json');
     echo json_encode($nots);
+} else if ($_SERVER["REQUEST_METHOD"] == "PUT") {
+
+    // Obtén los datos enviados en la solicitud POST
+    $datos = json_decode(file_get_contents("php://input"), true);
+    if ($datos) {
+        $conn = db::abreconexion();
+        $newsRepository = new NewsRepository($conn);
+        $newsRepository->updateNew($datos["id"], $datos["f_inicio"], $datos["f_fin"], $datos["duracion"], $datos["prioridad"], $datos["titulo"], $datos["perfil"], $datos["tipo"]);
+
+        // Devuelve una respuesta
+        echo '{"respuesta":"OK"}';
+    }
+} else if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+    $id=$_GET["id"];
+    $conn = db::abreconexion();
+    $newsRepository = new NewsRepository($conn);
+    $newsRepository->deleteNew($id);
+
+    // Devuelve una respuesta
+    echo '{"respuesta":"OK"}';
 }
 ?>
