@@ -13,7 +13,7 @@
     <div id="news-container">
         <h1>CREAR NOTICIAS</h1>
 
-        <form action="/API/apiNews.php" method="POST" enctype="multipart/form-data">
+        <form action="admin.php" method="POST" enctype="multipart/form-data">
             <label for="f_inicio">Fecha Inicio:</label>
             <input type="datetime-local" id="f_inicio" name="f_inicio">
 
@@ -24,7 +24,7 @@
             <input type="text" id="duracion" name="duracion">
 
             <label for="prioridad">Prioridad:</label>
-            <input type="text" id="prioridad" name="prioridad">
+            <input type="number" id="prioridad" name="prioridad" min="1" max="3">
 
             <label for="titulo">Titulo:</label>
             <input type="text" id="titulo" name="titulo">

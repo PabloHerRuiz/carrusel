@@ -52,6 +52,39 @@ window.addEventListener("load", function () {
 
     crear.addEventListener("click", function () {
 
+        // Almacenar mensajes de error
+        var errores = [];
+
+        // Validar que los campos no estén vacíos
+        if (f_inicio.value === "") {
+            errores.push('Por favor, selecciona una dificultad.');
+        }
+        if (f_fin.value === "") {
+            errores.push('Por favor, selecciona una categoría.');
+        }
+        if (duracion.value === "") {
+            errores.push('Por favor, ingresa el enunciado.');
+        }
+        if (prioridad.value === "") {
+            errores.push('Por favor, ingresa la opción 1.');
+        }
+        if (titulo.value === "") {
+            errores.push('Por favor, ingresa la opción 2.');
+        }
+        if (perfil.value === "") {
+            errores.push('Por favor, ingresa la opción 3.');
+        }
+        if (tipo.value === "") {
+            errores.push('Por favor, selecciona la opción correcta.');
+        }
+
+        // Mostrar alerta con mensajes de error
+        if (errores.length > 0) {
+            alert('Todos los campos son obligatorios. Por favor, completa todos los campos:\n\n' + errores.join('\n'));
+            return;
+        }
+
+
         // TODO para mañana hay que guardar el tipo en un json guardando segun lo que haya en tipo
 
         var noticia = {
