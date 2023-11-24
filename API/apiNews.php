@@ -109,30 +109,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             header('Content-Type: application/json');
             echo json_encode($nots);
-        }
-        
-    } else if(!isset($_GET["perfil"])) {
-        $conn = db::abreconexion();
-        $newsRepository = new NewsRepository($conn);
-        $noticias = $newsRepository->readAllNews();
+        } else {
+            $conn = db::abreconexion();
+            $newsRepository = new NewsRepository($conn);
+            $noticias = $newsRepository->readAllNews();
 
-        $not = [];
-        foreach ($noticias as $noticia) {
-            $not = [
-                "id" => $noticia['idNoticia'],
-                "f_inicio" => $noticia['f_inicio'],
-                "f_fin" => $noticia['f_fin'],
-                "duracion" => $noticia['duracion'],
-                "prioridad" => $noticia['prioridad'],
-                "titulo" => $noticia['titulo'],
-                "perfil" => $noticia['perfil'],
-                "tipo" => $noticia['tipo']
-            ];
-            $nots[] = $not;
-        }
+            $not = [];
+            foreach ($noticias as $noticia) {
+                $not = [
+                    "id" => $noticia['idNoticia'],
+                    "f_inicio" => $noticia['f_inicio'],
+                    "f_fin" => $noticia['f_fin'],
+                    "duracion" => $noticia['duracion'],
+                    "prioridad" => $noticia['prioridad'],
+                    "titulo" => $noticia['titulo'],
+                    "perfil" => $noticia['perfil'],
+                    "tipo" => $noticia['tipo']
+                ];
+                $nots[] = $not;
+            }
 
-        header('Content-Type: application/json');
-        echo json_encode($nots);
+            header('Content-Type: application/json');
+            echo json_encode($nots);
+        }
     }
 } else if ($_SERVER["REQUEST_METHOD"] == "PUT") {
 
