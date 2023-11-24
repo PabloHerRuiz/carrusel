@@ -30,7 +30,6 @@ img:not(.iconE, .iconB, .iconG) {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 20px;
   width: 30%;
 }
 

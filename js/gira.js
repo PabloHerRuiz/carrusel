@@ -23,12 +23,11 @@ window.addEventListener("load", function () {
         baraja.sort(function (a, b) { return Math.random() - 0.5 });
     }
 
-    // Verifica si se activó el refresco
-    var refrescarCarrusel = localStorage.getItem('refrescarCarrusel');
+
 
     function cargarCarrusel() {
         // Carrusel
-        fetch("http://localhost/carrusel/API/apiNews.php?perfil="+perfil)
+        fetch("http://localhost/carrusel/API/apiNews.php?perfil=" + perfil)
             .then(x => x.json())
             .then(y => {
                 // Barajamos los datos que vienen de la API
@@ -74,6 +73,10 @@ window.addEventListener("load", function () {
 
                         //refrescar
                         if ((i + 1) == y.length) {
+
+                            // Verifica si se activó el refresco
+                            var refrescarCarrusel = localStorage.getItem('refrescarCarrusel');
+
                             if (refrescarCarrusel === 'true') {
                                 // Cancela el temporizador actual antes de cargar el carrusel nuevamente
                                 clearTimeout(window.timeOut);
@@ -83,6 +86,7 @@ window.addEventListener("load", function () {
 
                                 // Desactiva el refresco para evitar recargas continuas
                                 localStorage.setItem('refrescarCarrusel', 'false');
+                                return;
                             }
                         }
 

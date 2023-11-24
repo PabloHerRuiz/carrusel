@@ -207,7 +207,7 @@ window.addEventListener("load", function () {
     //listado noticias
     var tbody = document.getElementById("bodyTabla");
 
-    fetch("http://localhost/carrusel/API/apiNews.php")
+    fetch("http://localhost/carrusel/API/apiNews.php?perfil=todos")
         .then(x => x.json())
         .then(y => {
             if (y && y.length > 0) {
