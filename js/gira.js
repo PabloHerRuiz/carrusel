@@ -5,6 +5,11 @@ window.addEventListener("load", function () {
     var totalElementosSpan = document.getElementById("totalElementos");
     var plantillaNoticia;
 
+    var url = new URL(window.location.href);
+
+    var perfil = url.searchParams.get("perfil");
+
+
     // Cargar la plantilla de noticia una vez
     fetch("plantilla/noticia.html")
         .then(x => x.text())
@@ -21,20 +26,12 @@ window.addEventListener("load", function () {
     // Verifica si se activó el refresco
     var refrescarCarrusel = localStorage.getItem('refrescarCarrusel');
 
-    // if (refrescarCarrusel === 'true') {
-    //     // Lógica para recargar el carrusel
-    //     cargarCarrusel();
-
-    //     // Desactiva el refresco para evitar recargas continuas
-    //     localStorage.setItem('refrescarCarrusel', 'false');
-    // }
-
     function cargarCarrusel() {
         // Carrusel
-        fetch("http://localhost/carrusel/API/apiNews.php")
+        fetch("http://localhost/carrusel/API/apiNews.php?perfil="+perfil)
             .then(x => x.json())
             .then(y => {
-                //barajamos los datos que vienen de la api
+                // Barajamos los datos que vienen de la API
                 shuffle(y);
 
                 let i = 0;
@@ -75,8 +72,12 @@ window.addEventListener("load", function () {
                         // Actualiza el índice en el div de información
                         indiceSpan.textContent = i + 1;
 
-                        if ((i+1) == y.length) {
+                        //refrescar
+                        if ((i + 1) == y.length) {
                             if (refrescarCarrusel === 'true') {
+                                // Cancela el temporizador actual antes de cargar el carrusel nuevamente
+                                clearTimeout(window.timeOut);
+
                                 // Lógica para recargar el carrusel
                                 cargarCarrusel();
 
@@ -85,14 +86,15 @@ window.addEventListener("load", function () {
                             }
                         }
 
-                        //bucle infinito
+                        // Bucle infinito
                         i = (i + 1) % y.length;
 
-                        //temporizador
-                        setTimeout(mostrarElemento, y[i].duracion);
+                        // Temporizador y almacenar el identificador devuelto
+                        window.timeOut = setTimeout(mostrarElemento, y[i].duracion);
                     }
                 }
 
+                // Inicia el carrusel
                 mostrarElemento();
             });
     }

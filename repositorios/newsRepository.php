@@ -34,7 +34,7 @@ class NewsRepository
         $stmt->execute();
     }
     //UPDATE
-    public function updateNew($idNoticia,$f_inicio, $f_fin, $duracion, $prioridad, $titulo, $perfil, $tipo)
+    public function updateNew($idNoticia, $f_inicio, $f_fin, $duracion, $prioridad, $titulo, $perfil, $tipo)
     {
         $query = "UPDATE NOTICIAS SET F_INICIO=:f_inicio,F_FIN=:f_fin,DURACION=:duracion,PRIORIDAD=:prioridad,TITULO=:titulo,PERFIL=:perfil,TIPO=:tipo WHERE idNoticia=:idNoticia";
         $stmt = $this->conexion->prepare($query);
@@ -67,6 +67,27 @@ class NewsRepository
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    //LEER TODOS LOS ALUMNOS
+    public function readAllAlu()
+    {
+        $query = "SELECT * FROM NOTICIAS WHERE PERFIL IN (1,3)";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+     //LEER TODOS LOS PROFESORES
+     public function readAllProf()
+     {
+         $query = "SELECT * FROM NOTICIAS WHERE PERFIL IN (2,3)";
+         $stmt = $this->conexion->prepare($query);
+         $stmt->execute();
+         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+         return $result;
+     }
+
 
 }
 

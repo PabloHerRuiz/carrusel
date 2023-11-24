@@ -111,7 +111,6 @@ a{
 #noticia-container {
   width: 100vw;
   height: 100vh;
-  background-color: #00ff4c;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -128,8 +127,6 @@ h1 {
 }
 
 #contenido {
-  /* display: flex;
-  justify-content: center; */
   font-size: 30px;
 }
 
