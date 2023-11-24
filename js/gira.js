@@ -30,6 +30,18 @@ window.addEventListener("load", function () {
         fetch("http://localhost/carrusel/API/apiNews.php?perfil=" + perfil)
             .then(x => x.json())
             .then(y => {
+
+                var longitud=y.length;
+
+                //prioridad
+                for (let j = 0; j < longitud; j++) {
+                    if (y[j].prioridad != 1) {
+                        for (let h = 1; h < y[j].prioridad; h++) {
+                            y.push(y[j]);
+                        }
+                    }
+                }
+
                 // Barajamos los datos que vienen de la API
                 shuffle(y);
 
