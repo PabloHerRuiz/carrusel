@@ -21,13 +21,13 @@ window.addEventListener("load", function () {
     // Verifica si se activó el refresco
     var refrescarCarrusel = localStorage.getItem('refrescarCarrusel');
 
-    if (refrescarCarrusel === 'true') {
-        // Lógica para recargar el carrusel
-        cargarCarrusel();
+    // if (refrescarCarrusel === 'true') {
+    //     // Lógica para recargar el carrusel
+    //     cargarCarrusel();
 
-        // Desactiva el refresco para evitar recargas continuas
-        localStorage.setItem('refrescarCarrusel', 'false');
-    }
+    //     // Desactiva el refresco para evitar recargas continuas
+    //     localStorage.setItem('refrescarCarrusel', 'false');
+    // }
 
     function cargarCarrusel() {
         // Carrusel
@@ -75,7 +75,7 @@ window.addEventListener("load", function () {
                         // Actualiza el índice en el div de información
                         indiceSpan.textContent = i + 1;
 
-                        if (i == y.length) {
+                        if ((i+1) == y.length) {
                             if (refrescarCarrusel === 'true') {
                                 // Lógica para recargar el carrusel
                                 cargarCarrusel();
