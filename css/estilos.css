@@ -29,8 +29,8 @@ img:not(.iconE, .iconB, .iconG) {
 #news-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   width: 30%;
+  margin: 20px;
 }
 
 
@@ -95,7 +95,8 @@ button {
 }
 
 textarea {
-  padding: 50px;
+  width: 287px;
+  height: 112px;
 }
 
 .buttons {
@@ -107,16 +108,21 @@ a{
 }
 
 /* web */
-#noticia-container {
-  width: 100vw;
-  height: 100vh;
+body {
+  margin: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#noticia-container {
   text-align: center;
-  top: 0;
-  left: 0;
+  max-width: 80vw;
+  max-height: 80vh;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 h1 {
